@@ -1,0 +1,699 @@
+/* ==========================================================================
+   VARIABLES Y RESET BASE
+   ========================================================================== */
+:root {
+  --bg-app: #f1f5f9;
+  --bg-surface: #ffffff;
+  --bg-subtle: #f8fafc;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --border-color: #cbd5e1;
+  --border-light: #e2e8f0;
+  --primary: #1e3a8a;
+  --primary-hover: #172554;
+  --accent: #0d9488;
+  --accent-hover: #0f766e;
+  --danger: #dc2626;
+  --radius-md: 8px;
+  --radius-sm: 6px;
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.08);
+  --shadow-doc: 0 10px 30px rgba(15, 23, 42, 0.14);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Segoe UI", Roboto, -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+/* ==========================================================================
+   BARRA SUPERIOR
+   ========================================================================== */
+.topbar {
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-light);
+  padding: 0.85rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: var(--shadow-sm);
+}
+
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.brand-badge {
+  background: var(--primary);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1rem;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.5px;
+}
+
+.topbar-brand h1 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1.2;
+}
+
+.topbar-brand p {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* ==========================================================================
+   BOTONES Y CONTROLES DE FORMULARIO
+   ========================================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.9rem;
+  font-size: 0.83rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-decoration: none;
+}
+
+.btn-sm {
+  padding: 0.35rem 0.7rem;
+  font-size: 0.78rem;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #ffffff;
+}
+.btn-primary:hover {
+  background: var(--primary-hover);
+}
+
+.btn-secondary {
+  background: #e0e7ff;
+  color: var(--primary);
+  border-color: #c7d2fe;
+}
+.btn-secondary:hover {
+  background: #c7d2fe;
+}
+
+.btn-accent {
+  background: var(--accent);
+  color: #ffffff;
+}
+.btn-accent:hover {
+  background: var(--accent-hover);
+}
+
+.btn-outline {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+.btn-outline:hover {
+  background: var(--bg-subtle);
+}
+
+.btn-danger-outline {
+  background: var(--bg-surface);
+  color: var(--danger);
+  border-color: #fecaca;
+}
+.btn-danger-outline:hover {
+  background: #fef2f2;
+}
+
+.file-label {
+  user-select: none;
+}
+
+/* ==========================================================================
+   WORKSPACE DE DOS COLUMNAS
+   ========================================================================== */
+.workspace {
+  display: grid;
+  grid-template-columns: 480px 1fr;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  max-width: 1600px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+.editor-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 1.15rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.9rem;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.card-header h2 {
+  font-size: 0.96rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.subsection-title {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  margin: 0.85rem 0 0.5rem;
+}
+
+.tag {
+  font-size: 0.7rem;
+  font-weight: 600;
+  background: var(--bg-subtle);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-light);
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 0.65rem;
+}
+
+.form-group label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select,
+textarea {
+  width: 100%;
+  padding: 0.48rem 0.65rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-family: inherit;
+  color: var(--text-primary);
+  background: #ffffff;
+  transition: border-color 0.15s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.12);
+}
+
+/* ==========================================================================
+   RESULTADO DE TARIFA SUGERIDA
+   ========================================================================== */
+.rate-result-box {
+  margin-top: 0.5rem;
+  background: #f0fdfa;
+  border: 1px solid #99f6e4;
+  border-radius: var(--radius-sm);
+  padding: 0.85rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.rate-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #115e59;
+  text-transform: uppercase;
+}
+
+.rate-value {
+  display: block;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #0f766e;
+  line-height: 1.2;
+}
+
+.rate-breakdown {
+  font-size: 0.75rem;
+  color: #115e59;
+}
+
+/* ==========================================================================
+   CONSTRUCTOR DINÁMICO DE PARTIDAS (CRUD)
+   ========================================================================== */
+.items-editor-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.item-editor-card {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem;
+}
+
+.item-editor-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.item-index-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.btn-remove-item {
+  background: transparent;
+  border: none;
+  color: var(--danger);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-remove-item:hover {
+  text-decoration: underline;
+}
+
+.item-metrics-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.5rem;
+  margin-top: 0.45rem;
+}
+
+.item-subtotal-pill {
+  background: #e2e8f0;
+  border-radius: var(--radius-sm);
+  padding: 0.48rem 0.6rem;
+  font-size: 0.83rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* ==========================================================================
+   PANEL DE VISTA PREVIA Y HOJA TAMAÑO CARTA
+   ========================================================================== */
+.preview-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.preview-toolbar {
+  width: 100%;
+  max-width: 816px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.status-pill {
+  background: #dcfce7;
+  color: #166534;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.74rem;
+}
+
+/* Hoja Carta: 8.5in x 11in (~816px x 1056px a 96dpi) */
+.document-sheet {
+  width: 100%;
+  max-width: 816px;
+  min-height: 1056px;
+  background: #ffffff;
+  padding: 54px 58px;
+  box-shadow: var(--shadow-doc);
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #1e293b;
+}
+
+.doc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.doc-issuer h2 {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 0.2rem;
+}
+
+.doc-specialty {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+.doc-contact {
+  font-size: 0.82rem;
+  color: #64748b;
+  margin-top: 0.25rem;
+}
+
+.doc-meta {
+  text-align: right;
+}
+
+.doc-title-label {
+  display: inline-block;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #0f172a;
+  margin-bottom: 0.45rem;
+}
+
+.meta-table {
+  border-collapse: collapse;
+  margin-left: auto;
+  font-size: 0.82rem;
+}
+
+.meta-table th {
+  text-align: right;
+  padding: 0.15rem 0.6rem 0.15rem 0;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.meta-table td {
+  text-align: right;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.doc-divider {
+  border: 0;
+  border-top: 2px solid var(--primary);
+  margin: 1.25rem 0;
+}
+
+.doc-client-box {
+  background: #f8fafc;
+  border-left: 4px solid var(--primary);
+  padding: 0.9rem 1.1rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.doc-section-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  margin-bottom: 0.2rem;
+}
+
+.doc-client-box h3 {
+  font-size: 1.02rem;
+  color: #0f172a;
+}
+
+.doc-project-name {
+  font-size: 0.96rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.doc-items-section {
+  flex-grow: 1;
+}
+
+.doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+  font-size: 0.85rem;
+}
+
+.doc-table thead th {
+  background: var(--primary);
+  color: #ffffff;
+  padding: 0.6rem 0.65rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.doc-table tbody td {
+  padding: 0.65rem;
+  border-bottom: 1px solid #e2e8f0;
+  vertical-align: top;
+}
+
+.doc-table tbody tr:nth-child(even) {
+  background: #f8fafc;
+}
+
+.col-num {
+  width: 36px;
+}
+.col-qty {
+  width: 105px;
+}
+.col-rate {
+  width: 115px;
+}
+.col-amount {
+  width: 125px;
+  font-weight: 700;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+.doc-summary-grid {
+  display: grid;
+  grid-template-columns: 1.25fr 0.95fr;
+  gap: 1.75rem;
+  align-items: start;
+  margin-top: 1rem;
+}
+
+.doc-notes h4 {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #334155;
+  margin-bottom: 0.4rem;
+}
+
+.doc-notes p {
+  font-size: 0.8rem;
+  color: #475569;
+  white-space: pre-line;
+  line-height: 1.55;
+}
+
+.totals-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.86rem;
+}
+
+.totals-table th {
+  text-align: left;
+  padding: 0.4rem 0.5rem;
+  color: #475569;
+  font-weight: 600;
+}
+
+.totals-table td {
+  text-align: right;
+  padding: 0.4rem 0.5rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.total-final-row th,
+.total-final-row td {
+  border-top: 2px solid var(--primary);
+  border-bottom: 2px solid var(--primary);
+  background: #eff6ff;
+  color: var(--primary);
+  font-size: 1.02rem;
+  font-weight: 800;
+  padding: 0.65rem 0.5rem;
+}
+
+.doc-footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  margin-top: 3rem;
+  padding-top: 1rem;
+}
+
+.signature-box {
+  text-align: center;
+}
+
+.signature-line {
+  border-top: 1px solid #94a3b8;
+  margin-bottom: 0.4rem;
+}
+
+.signature-box p {
+  font-size: 0.78rem;
+  color: #475569;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   RESPONSIVE EN PANTALLA
+   ========================================================================== */
+@media (max-width: 1120px) {
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   REGLAS DE IMPRESIÓN Y EXPORTACIÓN PDF (@media print)
+   ========================================================================== */
+@media print {
+  @page {
+    size: letter portrait;
+    margin: 12mm;
+  }
+
+  body {
+    background: #ffffff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .no-print,
+  .topbar,
+  .editor-panel,
+  .preview-toolbar {
+    display: none !important;
+  }
+
+  .workspace {
+    display: block !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .preview-panel {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  .document-sheet {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: auto !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .doc-table thead th,
+  .total-final-row th,
+  .total-final-row td,
+  .doc-client-box {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
