@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CotizaPro — Calculadora de Tarifa Real y Generador de Cotizaciones PDF</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- BARRA SUPERIOR DE HERRAMIENTAS (OCULTA AL IMPRIMIR) -->
+  <header class="topbar no-print">
+    <div class="topbar-brand">
+      <span class="brand-badge">CP</span>
+      <div>
+        <h1>CotizaPro</h1>
+        <p>Calculadora de Tarifa Real &amp; Cotizaciones Profesionales</p>
+      </div>
+    </div>
+
+    <div class="topbar-actions">
+      <button type="button" id="btnLoadDemo" class="btn btn-secondary">
+        Cargar Cotización Demo
+      </button>
+      <button type="button" id="btnExportJson" class="btn btn-outline">
+        Exportar JSON
+      </button>
+      <label for="inputImportJson" class="btn btn-outline file-label">
+        Importar JSON
+        <input type="file" id="inputImportJson" accept=".json,application/json" hidden />
+      </label>
+      <button type="button" id="btnResetAll" class="btn btn-danger-outline">
+        Limpiar Todo
+      </button>
+      <button type="button" id="btnPrintPdf" class="btn btn-primary">
+        Imprimir / Guardar como PDF
+      </button>
+    </div>
+  </header>
+
+  <!-- CONTENEDOR PRINCIPAL DIVIDIDO -->
+  <main class="workspace">
+    <!-- PANEL IZQUIERDO: EDITOR Y CALCULADORAS (OCULTO AL IMPRIMIR) -->
+    <aside class="editor-panel no-print" aria-label="Panel de configuración y edición">
+      
+      <!-- SECCIÓN 1: CALCULADORA DE TARIFA POR HORA REAL -->
+      <section class="card">
+        <div class="card-header">
+          <h2>1. Calculadora de Tarifa por Hora Real</h2>
+          <span class="tag">Finanzas</span>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="calcNetIncome">Ingreso neto mensual objetivo ($)</label>
+            <input type="number" id="calcNetIncome" min="0" step="100" value="35000" />
+          </div>
+          <div class="form-group">
+            <label for="calcBillableHours">Horas facturables al mes</label>
+            <input type="number" id="calcBillableHours" min="1" step="1" value="100" />
+          </div>
+          <div class="form-group">
+            <label for="calcFixedExpenses">Gastos operativos fijos/mes ($)</label>
+            <input type="number" id="calcFixedExpenses" min="0" step="100" value="5000" />
+          </div>
+          <div class="form-group">
+            <label for="calcContingency">Margen de imprevistos (%)</label>
+            <input type="number" id="calcContingency" min="0" max="200" step="1" value="15" />
+          </div>
+        </div>
+
+        <div class="rate-result-box">
+          <div>
+            <span class="rate-label">Tarifa por Hora Sugerida</span>
+            <strong class="rate-value" id="suggestedRateDisplay">$460.00</strong>
+            <small class="rate-breakdown" id="rateBreakdownText">
+              Base: $400.00/h + 15% margen
+            </small>
+          </div>
+          <button type="button" id="btnApplySuggestedRate" class="btn btn-accent">
+            Aplicar tarifa a nuevas partidas
+          </button>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 2: DATOS GENERALES DE LA COTIZACIÓN -->
+      <section class="card">
+        <div class="card-header">
+          <h2>2. Datos Generales de la Cotización</h2>
+          <span class="tag">Documento</span>
+        </div>
+        <div class="grid-3">
+          <div class="form-group">
+            <label for="quoteFolio">Folio</label>
+            <input type="text" id="quoteFolio" placeholder="COT-2026-001" />
+          </div>
+          <div class="form-group">
+            <label for="quoteDate">Fecha de emisión</label>
+            <input type="date" id="quoteDate" />
+          </div>
+          <div class="form-group">
+            <label for="quoteValidity">Vigencia (días)</label>
+            <input type="number" id="quoteValidity" min="1" max="365" value="15" />
+          </div>
+        </div>
+
+        <h3 class="subsection-title">Datos del Emisor</h3>
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="issuerName">Nombre o Empresa</label>
+            <input type="text" id="issuerName" placeholder="Ej. Estudio Digital Norte" />
+          </div>
+          <div class="form-group">
+            <label for="issuerSpecialty">Especialidad / Giro</label>
+            <input type="text" id="issuerSpecialty" placeholder="Ej. Desarrollo Web Full-Stack" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="issuerContact">Datos de Contacto (Email, Teléfono, Web)</label>
+          <input type="text" id="issuerContact" placeholder="contacto@estudio.mx | +52 55 1234 5678" />
+        </div>
+
+        <h3 class="subsection-title">Datos del Cliente</h3>
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="clientName">Nombre o Empresa Cliente</label>
+            <input type="text" id="clientName" placeholder="Ej. Grupo Comercial Nova S.A." />
+          </div>
+          <div class="form-group">
+            <label for="projectName">Nombre del Proyecto</label>
+            <input type="text" id="projectName" placeholder="Ej. Plataforma E-Commerce B2B" />
+          </div>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 3: CONSTRUCTOR DINÁMICO DE PARTIDAS (CRUD) -->
+      <section class="card">
+        <div class="card-header">
+          <h2>3. Partidas y Entregables</h2>
+          <button type="button" id="btnAddItem" class="btn btn-primary btn-sm">
+            + Agregar Partida
+          </button>
+        </div>
+
+        <div class="items-editor-list" id="itemsEditorContainer">
+          <!-- Renderizado dinámicamente desde app.js -->
+        </div>
+      </section>
+
+      <!-- SECCIÓN 4: IMPUESTOS, DESCUENTOS Y CONDICIONES -->
+      <section class="card">
+        <div class="card-header">
+          <h2>4. Impuestos, Descuento y Condiciones</h2>
+          <span class="tag">Cierre</span>
+        </div>
+        <div class="grid-3">
+          <div class="form-group">
+            <label for="quoteCurrency">Moneda</label>
+            <select id="quoteCurrency">
+              <option value="MXN">MXN ($)</option>
+              <option value="USD">USD ($)</option>
+              <option value="EUR">EUR (€)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="quoteDiscount">Descuento (%)</label>
+            <input type="number" id="quoteDiscount" min="0" max="100" step="0.5" value="0" />
+          </div>
+          <div class="form-group">
+            <label for="quoteTax">IVA (%)</label>
+            <input type="number" id="quoteTax" min="0" max="100" step="0.5" value="16" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="quoteNotes">Notas y Condiciones de Pago</label>
+          <textarea id="quoteNotes" rows="4" placeholder="Ej. 50% de anticipo al aprobar la cotización y 50% contra entrega final..."></textarea>
+        </div>
+      </section>
+    </aside>
+
+    <!-- PANEL DERECHO: VISTA PREVIA EN VIVO (DOCUMENTO TAMAÑO CARTA) -->
+    <section class="preview-panel" aria-label="Vista previa del documento cotización">
+      <div class="preview-toolbar no-print">
+        <span>Vista Previa en Tiempo Real (Formato Carta)</span>
+        <span id="statusIndicator" class="status-pill">Guardado automáticamente</span>
+      </div>
+
+      <article class="document-sheet" id="printableDocument">
+        <!-- ENCABEZADO DEL DOCUMENTO -->
+        <header class="doc-header">
+          <div class="doc-issuer">
+            <h2 id="prevIssuerName">Nombre / Empresa Emisora</h2>
+            <p class="doc-specialty" id="prevIssuerSpecialty">Especialidad Profesional</p>
+            <p class="doc-contact" id="prevIssuerContact">Correo electrónico • Teléfono</p>
+          </div>
+          <div class="doc-meta">
+            <span class="doc-title-label">COTIZACIÓN</span>
+            <table class="meta-table">
+              <tr>
+                <th>Folio:</th>
+                <td id="prevFolio">COT-2026-001</td>
+              </tr>
+              <tr>
+                <th>Emisión:</th>
+                <td id="prevDate">—</td>
+              </tr>
+              <tr>
+                <th>Válida hasta:</th>
+                <td id="prevValidUntil">—</td>
+              </tr>
+            </table>
+          </div>
+        </header>
+
+        <hr class="doc-divider" />
+
+        <!-- BLOQUE CLIENTE Y PROYECTO -->
+        <section class="doc-client-box">
+          <div>
+            <span class="doc-section-label">PREPARADO PARA:</span>
+            <h3 id="prevClientName">Nombre del Cliente</h3>
+          </div>
+          <div>
+            <span class="doc-section-label">PROYECTO:</span>
+            <p class="doc-project-name" id="prevProjectName">Nombre del Proyecto</p>
+          </div>
+        </section>
+
+        <!-- TABLA DE PARTIDAS -->
+        <section class="doc-items-section">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th class="col-num">#</th>
+                <th class="col-desc">Concepto / Descripción del Entregable</th>
+                <th class="col-qty text-right">Horas / Cant.</th>
+                <th class="col-rate text-right">Tarifa Unit.</th>
+                <th class="col-amount text-right">Importe</th>
+              </tr>
+            </thead>
+            <tbody id="prevItemsBody">
+              <!-- Filas generadas dinámicamente -->
+            </tbody>
+          </table>
+        </section>
+
+        <!-- BLOQUE DE TOTALES Y NOTAS -->
+        <section class="doc-summary-grid">
+          <div class="doc-notes">
+            <h4>Notas y Condiciones Comerciales</h4>
+            <p id="prevNotes">Sin notas adicionales.</p>
+          </div>
+
+          <div class="doc-totals">
+            <table class="totals-table">
+              <tr>
+                <th>Subtotal:</th>
+                <td id="prevSubtotal">$0.00</td>
+              </tr>
+              <tr id="prevDiscountRow">
+                <th id="prevDiscountLabel">Descuento (0%):</th>
+                <td id="prevDiscountAmount">-$0.00</td>
+              </tr>
+              <tr id="prevTaxableRow">
+                <th>Subtotal con descuento:</th>
+                <td id="prevTaxableAmount">$0.00</td>
+              </tr>
+              <tr>
+                <th id="prevTaxLabel">IVA (16%):</th>
+                <td id="prevTaxAmount">$0.00</td>
+              </tr>
+              <tr class="total-final-row">
+                <th>Total Neto:</th>
+                <td id="prevGrandTotal">$0.00</td>
+              </tr>
+            </table>
+          </div>
+        </section>
+
+        <!-- PIE DE FIRMA -->
+        <footer class="doc-footer">
+          <div class="signature-box">
+            <div class="signature-line"></div>
+            <p id="prevSignatureIssuer">Firma del Emisor</p>
+          </div>
+          <div class="signature-box">
+            <div class="signature-line"></div>
+            <p>Aceptación del Cliente</p>
+          </div>
+        </footer>
+      </article>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
